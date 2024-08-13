@@ -6,6 +6,9 @@ export default class SyncsService {
     constructor(protected syncRepository: SyncsRepositories){}
     public async sync(param: string){
         const data = await this.syncRepository.getData(param);
+        if(!data.success){
+            return false;
+        }
         const unique = this.getUniqueBy(data.data);
         unique.forEach(async (u) => {
             if(!await this.syncRepository.checkIfProductExists(u.produk)){

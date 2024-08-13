@@ -9,7 +9,9 @@ export default class SyncsController {
 
     async sync({request, response}: HttpContextContract){
         try {
-            await this.syncService.sync(request.param('data'));
+            if(!await this.syncService.sync(request.param('data'))){
+                return response.internalServerError({message: "Fetch failed!", success: false});
+            }
             return response.ok({message: "Synchronized!", success: true});
         } catch (e){
             return response.internalServerError({message: e.message, success: false});
