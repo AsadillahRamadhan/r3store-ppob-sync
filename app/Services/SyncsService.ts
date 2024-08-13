@@ -1,6 +1,7 @@
 import { inject } from "@adonisjs/core/build/standalone";
 import SyncsRepositories from "App/Repositories/SyncsRepository";
 import { DateTime } from "luxon";
+import { string } from '@ioc:Adonis/Core/Helpers'
 
 @inject()
 export default class SyncsService {
