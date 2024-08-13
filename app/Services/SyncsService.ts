@@ -16,18 +16,21 @@ export default class SyncsService {
             if(!await this.syncRepository.checkIfProductExists(u.produk)){
                 await this.syncRepository.storeProduct(u);
             }
+
+            if(!await this.syncRepository.checkProductInput(u.produk)){
+                await this.syncRepository.createProductInput(u.kategori, u.produk);
+            }
         })
-        let count = 0;
         data.data.forEach(async (d: any) => {
            if(!await this.syncRepository.getProductItem(d.kode)){
             await this.syncRepository.createProductItem(d);
            } else {
             await this.syncRepository.syncProductItem(d);
            }
-           count++;
         })
 
         await this.syncRepository.disableUnused(unique, now);
+        
         return true;
     }
 

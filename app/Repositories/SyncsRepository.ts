@@ -4,6 +4,8 @@ import { DateTime } from "luxon";
 import { string } from '@ioc:Adonis/Core/Helpers'
 import Product from "App/Models/Product";
 import ProductItem from "App/Models/ProductItem";
+import ProductInput from "App/Models/ProductInput";
+import ProductInputConfig from "App/Statics/ProductInputConfig";
 
 export default class SyncsRepositories {
     public async getData(param: string){
@@ -85,6 +87,29 @@ export default class SyncsRepositories {
             is_active: parseInt(data.status),
             last_sync: `${DateTime.now()}`
         })
+    }
+
+    public async createProductInput(kategori: string, produk: string){
+        let data: string = "";
+        if(kategori == 'PULSA'){
+            data = ProductInputConfig.pulsa();
+        } else if(kategori == 'DOMPET DIGITAL'){
+            data = ProductInputConfig.dompetDigital();
+        } else if(kategori == 'TOKEN PLN'){
+            data = ProductInputConfig.tokenPln();
+        }
+
+        const product = await Product.findBy('title', produk);
+        return await ProductInput.create({
+            productId: product?.id,
+            tag: 'input',
+            attrs: data
+        });
+    }
+
+    public async checkProductInput(produk: string){
+        const product = await Product.findBy('title', produk);
+        return await ProductInput.findBy('product_id', product?.id);
     }
 
     private makeProvider(data: any){
