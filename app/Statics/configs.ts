@@ -43,3 +43,10 @@ export const productInputConfig = {
         }
     ]
 }
+
+export const categoryIdConfig = {
+    pulsa: 4,
+    tokenPln: 5,
+    dompetDigital: 6,
+    finance: 7
+}

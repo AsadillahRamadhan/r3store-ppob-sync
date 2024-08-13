@@ -1,7 +1,6 @@
 import { inject } from "@adonisjs/core/build/standalone";
 import SyncsRepositories from "App/Repositories/SyncsRepository";
 import { DateTime } from "luxon";
-import { string } from '@ioc:Adonis/Core/Helpers'
 
 @inject()
 export default class SyncsService {
@@ -28,7 +27,7 @@ export default class SyncsService {
            } else {
             await this.syncRepository.syncProductItem(d);
            }
-        })
+        });
 
         await this.syncRepository.disableUnused(unique, now);
         
