@@ -2,6 +2,8 @@ import Database from "@ioc:Adonis/Lucid/Database";
 import axios from "axios";
 import { DateTime } from "luxon";
 import { string } from '@ioc:Adonis/Core/Helpers'
+import Product from "App/Models/Product";
+import ProductItem from "App/Models/ProductItem";
 
 export default class SyncsRepositories {
     public async getData(param: string){
@@ -40,8 +42,15 @@ export default class SyncsRepositories {
         });
     }
 
-    public async getProductItem(name: string){
-        return Database.query().from('product_items').select('name').where('name', name).first();
+    public async getProductItem(kode: string){
+        return Database.query().from('product_items').select('name').whereJsonSuperset('provider', {raw: {kode: kode}}).first(); 
+    }
+
+    public async disableUnused(product_name: any[], now: DateTime){
+        product_name.forEach(async (title: any) => {
+            const product_id = await Product.query().select('id').where('title', title.produk).first();
+            await ProductItem.query().select().where('product_id', `${product_id?.id}`).where('last_sync', '<', `${now}`).update({is_active: 0});
+        });
     }
 
     public async createProductItem(data: any){

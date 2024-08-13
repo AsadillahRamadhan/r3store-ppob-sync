@@ -1,10 +1,12 @@
 import { inject } from "@adonisjs/core/build/standalone";
 import SyncsRepositories from "App/Repositories/SyncsRepository";
+import { DateTime } from "luxon";
 
 @inject()
 export default class SyncsService {
     constructor(protected syncRepository: SyncsRepositories){}
     public async sync(param: string){
+        const now = DateTime.now();
         const data = await this.syncRepository.getData(param);
         if(!data.success){
             return false;
@@ -15,14 +17,17 @@ export default class SyncsService {
                 await this.syncRepository.storeProduct(u);
             }
         })
+        let count = 0;
         data.data.forEach(async (d: any) => {
-           if(!await this.syncRepository.getProductItem(d.keterangan)){
+           if(!await this.syncRepository.getProductItem(d.kode)){
             await this.syncRepository.createProductItem(d);
            } else {
             await this.syncRepository.syncProductItem(d);
            }
-
+           count++;
         })
+
+        await this.syncRepository.disableUnused(unique, now);
         return true;
     }
 
