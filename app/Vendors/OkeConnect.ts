@@ -304,7 +304,7 @@ export default class OkeConnect {
 
         if (type == 'sukses') {
 
-            const regex = /(T#\d+)\s+(R3S#\d+)\s+([A-Za-z]+)\s([\d.,]+)\s+([A-Z]\d+\.\d+)\s+(\w+)\.\s+SN\/Ref:\s+([\w.]+)\.\s+Saldo\s+([\d.,]+)\s+-\s+([\d.,]+)\s+=\s+([\d.,]+)\s+@(\d{2}\/\d{2})\s+(\d{2}:\d{2})/
+            const regex = /(T#\d+)\s+(R#\d+)\s+(.*)\s+(\w+\.\d+)\s+(\w+)\.\s+SN\/Ref:\s+([\w.]+)\.\s+Saldo\s+([\d.,]+)\s+-\s+([\d.,]+)\s+=\s+([\d.,]+)\s+@(\d{2}\/\d{2})\s+(\d{2}:\d{2})/
 
             const match = str.match(regex)
 
@@ -344,7 +344,7 @@ export default class OkeConnect {
             }
         } else if (type == 'createTransaction') {
 
-            const regex = /(T#\d+)\s+(R3S#\d+)\s+([A-Za-z0-9]+\.\d+)\s+(.+?)\.\s+(Saldo\s[\d\.\s\-=\d]+)\s+@(\d{2}:\d{2})/;
+            const regex = /(T#\d+)\s+(R#R3S-\w+)\s+(.*)\s+([A-Za-z0-9]+\.\d+)\s+(.+?)\.\s+(Saldo\s[\d\.\s\-=\d]+)\s+@(\d{2}:\d{2})/;
     
             const match = str.match(regex);
     

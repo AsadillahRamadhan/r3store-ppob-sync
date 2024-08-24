@@ -25,3 +25,4 @@ Route.get('/', async () => {
 })
 
 Route.post('/sync/:data', 'SyncsController.sync');
+Route.get('/check-regex', 'SyncsController.regex');
